@@ -34,7 +34,7 @@ jobs:
       shell: bash
       run: |
         sudo apt-get update
-        sudo apt-get install autoconf autopoint bison texinfo gperf gcc g++ gdb python-pyinotify expect
+        sudo apt-get install autoconf autopoint bison texinfo gperf gcc g++ gdb python-pyinotify expect python3-sphinx
         pushd uutils
         make PROFILE=release
         BUILDDIR="$PWD/target/release/"
