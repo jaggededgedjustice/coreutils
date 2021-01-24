@@ -137,6 +137,9 @@ pub fn uumain(args: impl uucore::Args) -> i32 {
                 crash!(1, "Invalid WIDTH specification: `{}': {}", s, e);
             }
         };
+        if fmt_opts.width > 2500 {
+            crash!(1, "fmt: invalid width: ‘{}’: Numerical result out of range", fmt_opts.width);
+        }
         fmt_opts.goal = cmp::min(fmt_opts.width * 94 / 100, fmt_opts.width - 3);
     };
 
