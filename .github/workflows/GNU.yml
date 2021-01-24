@@ -56,8 +56,7 @@ jobs:
         pushd gnu
         for each_test in $(find tests/ -regex '.*\(sh\|pl\)');
         do
-          timeout -k 60 600 make check TESTS="$each_test" SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN
-_VERY_EXPENSIVE_TESTS=yes
+          timeout -k 60 600 make check TESTS="$each_test" SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN_VERY_EXPENSIVE_TESTS=yes
           if [[ $? -lt 124 ]]
           then
             runable_tests="${each_test} ${runable_tests}";
