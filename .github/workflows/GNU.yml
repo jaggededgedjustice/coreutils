@@ -66,8 +66,7 @@ _VERY_EXPENSIVE_TESTS=yes
           fi
         done
         echo $hang_tests >uutils_hanging_tests.txt
-        make check TESTS="${runable_tests}" SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN
-  _VERY_EXPENSIVE_TESTS=yes VERBOSE=no || :
+        make check TESTS="${runable_tests}" SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN_VERY_EXPENSIVE_TESTS=yes VERBOSE=no || :
     - uses: actions/upload-artifact@v2
       with:
         name: hanging-tests
