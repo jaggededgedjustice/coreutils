@@ -61,7 +61,7 @@ jobs:
           then
             runable_tests="${each_test} ${runable_tests}";
           else
-            hang_tests="${each_test} ${hang_tests}
+            hang_tests="${each_test} ${hang_tests}"
           fi
         done
         echo $hang_tests >uutils_hanging_tests.txt
