@@ -59,4 +59,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: hanging-tests
-        path: gnu/uutils_hanging_tests.txt
+        path: gnu/tests/test-suite.log
