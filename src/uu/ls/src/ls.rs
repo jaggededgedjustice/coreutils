@@ -559,14 +559,6 @@ fn display_file_name(
         name = get_inode(metadata, options) + &name;
     }
 
-    if options.opt_present("classify") {
-        let file_type = metadata.file_type();
-        if file_type.is_dir() {
-            name.push('/');
-        } else if file_type.is_symlink() {
-            name.push('@');
-        }
-    }
 
     if options.opt_present("long") && metadata.file_type().is_symlink() {
         if let Ok(target) = path.read_link() {
@@ -684,12 +676,6 @@ fn display_file_name(
 
         if color {
             name = color_name(name, code);
-        }
-        if classify {
-            if let Some(s) = sym {
-                name.push(s);
-                width += 1;
-            }
         }
     }
 
