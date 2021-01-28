@@ -47,6 +47,12 @@ jobs:
         sed -i "s/^[[:blank:]]*PATH=.*/  PATH='${BUILDDIR//\//\\/}\$(PATH_SEPARATOR)'\"\$\$PATH\" \\\/" Makefile
         sed -i 's| tr | /usr/bin/tr |' tests/init.sh
         make
+        # Generate the factor tests, so they are included in the path fix
+        for i in $(seq -w 1 36)
+        do
+          make tests/factor/t${i}.sh
+        done
+        grep -rl 'path_prepend_' | xargs sed -i 's|path_prepend_ ./src||'
         test -f "${BUILDDIR}/getlimits" || cp src/getlimits "${BUILDDIR}"
     - name: Run GNU tests
       shell: bash
@@ -54,7 +60,11 @@ jobs:
         BUILDDIR="${PWD}/uutils/target/release"
         GNULIB_DIR="${PWD}/gnulib"
         pushd gnu
-        sed -i -e '/tests\/misc\/seq.pl/ D' Makefile # Bug #1703
+        # Remove tests that rely on seq with large numbers. See issue #1703
+        sed -i -e '/tests\/misc\/seq.pl/ D' \
+               -e '/tests\/misc\/seq-precision.sh/D' \
+               -e 's/TESTS = $(all_tests) $(factor_tests)/TESTS = $(all_tests)/' \
+               Makefile
         make check SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN_VERY_EXPENSIVE_TESTS=yes VERBOSE=no || :
     - uses: actions/upload-artifact@v2
       with:
