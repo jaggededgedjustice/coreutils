@@ -69,7 +69,7 @@ jobs:
         BUILDDIR="${PWD}/uutils/target/release"
         GNULIB_DIR="${PWD}/gnulib"
         pushd gnu
-        timeout 3600 make check SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN_VERY_EXPENSIVE_TESTS=yes VERBOSE=no || :
+        timeout -sKILL 3600 make check SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN_VERY_EXPENSIVE_TESTS=yes VERBOSE=no || : # Have timeout send SIGKILL so make can't delete the log of the test that was in progress when timeout fired
     - uses: actions/upload-artifact@v2
       with:
         name: test-report
