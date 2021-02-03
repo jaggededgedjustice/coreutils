@@ -66,6 +66,7 @@ jobs:
         sed -i -e '/tests\/misc\/seq.pl/ D' \
                -e '/tests\/misc\/seq-precision.sh/D' \
                Makefile
+        sed -i -e '/tests\/tail-2\/pid.sh/ D' Makefile # hangs on github
         test -f "${BUILDDIR}/getlimits" || cp src/getlimits "${BUILDDIR}"
     - name: Run GNU tests
       shell: bash
