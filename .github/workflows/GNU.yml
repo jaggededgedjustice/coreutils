@@ -73,6 +73,7 @@ jobs:
                Makefile
         sed -i -e '/tests\/tail-2\/pid.sh/ D' Makefile # hangs on github, tail doesn't support -f
         sed -i -e'/incompat4/ D' -e"/options '-co' are incompatible/ d" tests/misc/sort.pl # Sort doesn't correctly check for incompatible options, waits for input
+        sed -i -e 's|stat|/usr/bin/stat|' tests/chgrp/basic.sh tests/cp/existing-perm-dir.sh tests/chgrp/basic.sh tests/touch/60-seconds.sh # uutils stat doesn't like --p
 
         test -f "${BUILDDIR}/getlimits" || cp src/getlimits "${BUILDDIR}"
     - name: Run GNU tests
