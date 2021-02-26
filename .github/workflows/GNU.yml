@@ -89,7 +89,7 @@ jobs:
         pushd gnu
 
         ( sleep 2h ; ps auxf) &
-        make -j "$(nproc)" check SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN_VERY_EXPENSIVE_TESTS=yes VERBOSE=no >/dev/null 2>&1 
+        unbuffer make -j "$(nproc)" check SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN_VERY_EXPENSIVE_TESTS=yes VERBOSE=no >/dev/null 2>&1 
         wait
     - name: Extract tests info
       shell: bash
