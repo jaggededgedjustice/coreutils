@@ -88,9 +88,8 @@ jobs:
         GNULIB_DIR="${PWD}/gnulib"
         pushd gnu
 
-        make -j "$(nproc)" check SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN_VERY_EXPENSIVE_TESTS=yes VERBOSE=no >/dev/null 2>&1 &
-        sleep 90m
-        ps -ef
+        ( sleep 2h ; ps auxf) &
+        make -j "$(nproc)" check SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN_VERY_EXPENSIVE_TESTS=yes VERBOSE=no >/dev/null 2>&1 
     - name: Extract tests info
       shell: bash
       run: |
