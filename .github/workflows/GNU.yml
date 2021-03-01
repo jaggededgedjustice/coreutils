@@ -81,6 +81,7 @@ jobs:
         sed -i -e "s|sort |$(which sort) |" tests/ls/hyperlink.sh
         sed -i -e "s|split |$(which split) |" tests/misc/factor-parallel.sh
         sed -i -e "s|truncate |$(which truncate) |" tests/split/fail.sh
+        sed -i -e "s|sha1sum |$(which sha1sum) |" tests/factor/t*sh
 
         #Add specific timeout to tests that currently hang to limit time spent waiting
         sed -i -e "s|seq \\$|$(which timeout) 0.1 seq \$|" tests/misc/seq-precision.sh tests/misc/seq-long-double.sh
