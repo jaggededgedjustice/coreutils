@@ -39,7 +39,7 @@ jobs:
         make PROFILE=release
         cp target/release/install target/release/ginstall # The GNU tests rename this script before running, to avoid confusion with the make target
         # Create *sum binaries
-        for sum in b2sum md5sum
+        for sum in b2sum md5sum sha1sum
         do
           sum_path="target/release/${sum}"
           fest -f "${sum_path}" || cp target/release/hashsum "${sum_path}"
