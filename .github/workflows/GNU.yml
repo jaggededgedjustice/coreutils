@@ -86,6 +86,11 @@ jobs:
         #Add specific timeout to tests that currently hang to limit time spent waiting
         sed -i -e "s|seq -sKILL \\$|$(which timeout) 0.05 seq \$|" tests/misc/seq-precision.sh tests/misc/seq-long-double.sh
         sed -i -e "s|cat |$(which timeout) 0.1 cat |" tests/misc/cat-self.sh
+
+        sed -i -e '/tests\/misc\/seq.pl/ D' \
+               -e '/tests\/misc\/seq-precision.sh/D' \
+               Makefile
+        
          
 
         test -f "${BUILDDIR}/getlimits" || cp src/getlimits "${BUILDDIR}"
