@@ -92,7 +92,7 @@ jobs:
         sed -i -e "s|split |$(which split) |" tests/misc/factor-parallel.sh && echo 'fix split'
         sed -i -e "s|truncate |$(which truncate) |" tests/split/fail.sh && echo 'fix truncate'
         sed -i -e "s|dd |$(which dd) |" tests/du/8gb.sh tests/tail-2/big-4gb.sh && echo 'fix dd'
-        sed -e -e "s|id -|$(which id) -|" tests/misc/runcon-no-reorder.sh && echo 'fix id'
+        sed -i -e "s|id -|$(which id) -|" tests/misc/runcon-no-reorder.sh && echo 'fix id'
 
         #Add specific timeout to tests that currently hang to limit time spent waiting
         sed -i -e "s|seq \\$|$(which timeout) 0.1 seq \$|" tests/misc/seq-precision.sh tests/misc/seq-long-double.sh && echo 'seq timeout'
