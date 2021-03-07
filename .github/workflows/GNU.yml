@@ -70,8 +70,8 @@ jobs:
         do
           make tests/factor/t${i}.sh
         done
-        grep -rl 'path_prepend_' tests/* | xargs sed -i 's|path_prepend_ ./src||'
-        sed -i -e 's|^seq |/usr/bin/seq |' -e "s|sha1sum |$(which sha1sum) |" tests/factor/t*sh
+        grep -rl 'path_prepend_' tests/* | xargs sed -i 's|path_prepend_ ./src||' && echo 'fix path prepend'
+        sed -i -e 's|^seq |/usr/bin/seq |' -e "s|sha1sum |$(which sha1sum) |" tests/factor/t*sh && echo 'fix factor tests'
 
         # Remove tests checking for --version & --help
         # Not really interesting for us and logs are too big
@@ -79,23 +79,24 @@ jobs:
                -e '/tests\/misc\/help-version.sh/ D' \
                -e '/tests\/misc\/help-version-getopt.sh/ D' \
                Makefile
+        echo 'remove --version tests'
 
         # Use the system coreutils where the test fails due to error in a util that is not the one being tested
-        sed -i -e "s|stat|$(which stat)|" tests/chgrp/basic.sh tests/cp/existing-perm-dir.sh tests/touch/60-seconds.sh tests/misc/sort-compress-proc.sh tests/touch/60-seconds.sh
-        sed -i -e "s|ls -|$(which ls) -|" tests/chgrp/posix-H.sh tests/chown/deref.sh tests/cp/same-file.sh tests/misc/mknod.sh tests/mv/part-symlink.sh tests/du/8gb.sh
-        sed -i -e "s|mkdir |$(which mkdir) |" tests/cp/existing-perm-dir.sh tests/rm/empty-inacc.sh
-        sed -i -e "s|timeout |$(which timeout) |" tests/cp/parent-perm-race.sh tests/ls/infloop.sh tests/misc/sort-exit-early.sh tests/misc/sort-NaN-infloop.sh tests/misc/uniq-perf.sh tests/tail-2/inotify-only-regular.sh tests/tail-2/pipe-f2.sh tests/tail-2/retry.sh tests/tail-2/symlink.sh tests/tail-2/wait.sh tests/tail-2/pid.sh tests/dd/stats.sh
-        sed -i -e "s| timeout | $(which timeout) |" tests/tail-2/inotify-rotate.sh # Don't break the function called 'grep_timeout'
-        sed -i -e "s|chmod |$(which chmod) |" tests/du/inacc-dir.sh tests/mkdir/p-3.sh
-        sed -i -e "s|sort |$(which sort) |" tests/ls/hyperlink.sh tests/misc/test-N.sh
-        sed -i -e "s|split |$(which split) |" tests/misc/factor-parallel.sh
-        sed -i -e "s|truncate |$(which truncate) |" tests/split/fail.sh
-        sed -i -e "s|dd |$(which dd) |" tests/du/8gb.sh tests/tail-2/big-4gb.sh
-        sed -e -e "s|id -|$(which id) -|" tests/misc/runcon-no-reorder.sh
+        sed -i -e "s|stat|$(which stat)|" tests/chgrp/basic.sh tests/cp/existing-perm-dir.sh tests/touch/60-seconds.sh tests/misc/sort-compress-proc.sh tests/touch/60-seconds.sh && echo 'fix stat'
+        sed -i -e "s|ls -|$(which ls) -|" tests/chgrp/posix-H.sh tests/chown/deref.sh tests/cp/same-file.sh tests/misc/mknod.sh tests/mv/part-symlink.sh tests/du/8gb.sh && echo 'fix ls'
+        sed -i -e "s|mkdir |$(which mkdir) |" tests/cp/existing-perm-dir.sh tests/rm/empty-inacc.sh && echo 'fix mkdir'
+        sed -i -e "s|timeout |$(which timeout) |" tests/cp/parent-perm-race.sh tests/ls/infloop.sh tests/misc/sort-exit-early.sh tests/misc/sort-NaN-infloop.sh tests/misc/uniq-perf.sh tests/tail-2/inotify-only-regular.sh tests/tail-2/pipe-f2.sh tests/tail-2/retry.sh tests/tail-2/symlink.sh tests/tail-2/wait.sh tests/tail-2/pid.sh tests/dd/stats.sh && echo 'fix timeout'
+        sed -i -e "s| timeout | $(which timeout) |" tests/tail-2/inotify-rotate.sh && echo 'fix tail2' # Don't break the function called 'grep_timeout'
+        sed -i -e "s|chmod |$(which chmod) |" tests/du/inacc-dir.sh tests/mkdir/p-3.sh && echo 'fix chmod'
+        sed -i -e "s|sort |$(which sort) |" tests/ls/hyperlink.sh tests/misc/test-N.sh && echo 'fix sort'
+        sed -i -e "s|split |$(which split) |" tests/misc/factor-parallel.sh && echo 'fix split'
+        sed -i -e "s|truncate |$(which truncate) |" tests/split/fail.sh && echo 'fix truncate'
+        sed -i -e "s|dd |$(which dd) |" tests/du/8gb.sh tests/tail-2/big-4gb.sh && echo 'fix dd'
+        sed -e -e "s|id -|$(which id) -|" tests/misc/runcon-no-reorder.sh && echo 'fix id'
 
         #Add specific timeout to tests that currently hang to limit time spent waiting
-        sed -i -e "s|seq \\$|$(which timeout) 0.1 seq \$|" tests/misc/seq-precision.sh tests/misc/seq-long-double.sh
-        sed -i -e "s|cat |$(which timeout) 0.1 cat |" tests/misc/cat-self.sh
+        sed -i -e "s|seq \\$|$(which timeout) 0.1 seq \$|" tests/misc/seq-precision.sh tests/misc/seq-long-double.sh && echo 'seq timeout'
+        sed -i -e "s|cat |$(which timeout) 0.1 cat |" tests/misc/cat-self.sh && echo 'cat timeout'
         echo 'adding set x' 
         sed -i -e 's|require_controlling_input_terminal_| set -x ; require_controlling_input_terminal_ ; set +x|'  tests/misc/stty-invalid.sh
 
