@@ -97,7 +97,7 @@ jobs:
         sed -i -e "s|seq \\$|$(which timeout) 0.1 seq \$|" tests/misc/seq-precision.sh tests/misc/seq-long-double.sh
         sed -i -e "s|cat |$(which timeout) 0.1 cat |" tests/misc/cat-self.sh
         
-        sed -i -e 's|require_controlling_input_terminal_| set -x ; require_controlling_input_terminal_ ; set +x'  tests/misc/stty-invalid.sh
+        sed -i -e 's|require_controlling_input_terminal_| set -x ; require_controlling_input_terminal_ ; set +x|'  tests/misc/stty-invalid.sh
 
         test -f "${BUILDDIR}/getlimits" || cp src/getlimits "${BUILDDIR}"
     - name: Run GNU tests
