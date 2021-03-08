@@ -99,6 +99,7 @@ jobs:
         sed -i -e "s|cat |$(which timeout) 0.1 cat |" tests/misc/cat-self.sh && echo 'cat timeout'
         echo 'adding set x' 
         sed -i -e 's|require_controlling_input_terminal_| set -x ; require_controlling_input_terminal_ ; set +x|'  tests/misc/stty-invalid.sh
+        sed -i 's|tty |/usr/bin/tty |' init.cfg
 
         test -f "${BUILDDIR}/getlimits" || cp src/getlimits "${BUILDDIR}"
     - name: Run GNU tests
