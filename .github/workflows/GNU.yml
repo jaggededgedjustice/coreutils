@@ -98,7 +98,9 @@ jobs:
         sed -i -e "s|seq \\$|$(which timeout) 0.1 seq \$|" tests/misc/seq-precision.sh tests/misc/seq-long-double.sh && echo 'seq timeout'
         sed -i -e "s|cat |$(which timeout) 0.1 cat |" tests/misc/cat-self.sh && echo 'cat timeout'
         echo 'adding set x'
-        sed -i 's|chown |/usr/bin/timeout 1 chown|' tests/chown/preserve-root.sh
+        sed -i 's|cp |/usr/bin/timeout 1 cp |' tests/cp/special-f.sh
+        sed -i 's|mv |/usr/bin/timeout 1 mv |' tests/mv/mv-special-1.sh
+        sed -i 's|dd |/usr/bin/timeout 10 dd |' tests/dd/stats.sh
 
         sed -i -e 's|require_controlling_input_terminal_| set -x ; require_controlling_input_terminal_ |'  tests/misc/stty-invalid.sh
         sed -i 's|tty |/usr/bin/tty |' init.cfg
