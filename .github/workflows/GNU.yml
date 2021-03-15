@@ -97,7 +97,9 @@ jobs:
         #Add specific timeout to tests that currently hang to limit time spent waiting
         sed -i -e "s|seq \\$|$(which timeout) 0.1 seq \$|" tests/misc/seq-precision.sh tests/misc/seq-long-double.sh && echo 'seq timeout'
         sed -i -e "s|cat |$(which timeout) 0.1 cat |" tests/misc/cat-self.sh && echo 'cat timeout'
-        echo 'adding set x' 
+        echo 'adding set x'
+        sed -i 's|chown |/usr/bin/timeout 1 chown|' tests/chown/preserve-root.sh
+
         sed -i -e 's|require_controlling_input_terminal_| set -x ; require_controlling_input_terminal_ |'  tests/misc/stty-invalid.sh
         sed -i 's|tty |/usr/bin/tty |' init.cfg
 
