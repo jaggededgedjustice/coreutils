@@ -75,6 +75,8 @@ jobs:
         sed -i -e '/tests\/tail-2\/pid.sh/ D' Makefile # hangs on github, tail doesn't support -f
         sed -i -e'/incompat4/ D' -e"/options '-co' are incompatible/ d" tests/misc/sort.pl # Sort doesn't correctly check for incompatible options, waits for input
 
+        sed -i -e '/INT_OFLOW/ D' -e 's/getlimits_/getlimits_ ; echo int_oflow: $INT_OFLOW/' tests/misc/printf.sh
+
         test -f "${BUILDDIR}/getlimits" || cp src/getlimits "${BUILDDIR}"
     - name: Run GNU tests
       shell: bash
@@ -83,7 +85,7 @@ jobs:
         GNULIB_DIR="${PWD}/gnulib"
         pushd gnu
 
-        unbuffer timeout -sKILL 3600 make check SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN_VERY_EXPENSIVE_TESTS=yes VERBOSE=no || :
+        unbuffer timeout -sKILL 3600 make check SUBDIRS=. RUN_EXPENSIVE_TESTS=yes RUN_VERY_EXPENSIVE_TESTS=yes VERBOSE=no TESTS='tests/misc/printf.sh' || :
     - name: Extract tests info
       shell: bash
       run: |
