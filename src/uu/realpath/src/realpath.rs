@@ -11,7 +11,7 @@
 extern crate uucore;
 
 use clap::{crate_version, App, Arg};
-use std::path::{Path, PathBuf};
+use std::path::{Component, Path, PathBuf};
 use uucore::fs::{canonicalize, MissingHandling, ResolveMode};
 
 static ABOUT: &str = "print the resolved path";
@@ -122,6 +122,24 @@ fn resolve_path(p: &Path, strip: bool, zero: bool, logical: bool) -> std::io::Re
     };
     let abs = canonicalize(p, MissingHandling::Normal, resolve)?;
     let line_ending = if zero { '\0' } else { '\n' };
-    print!("{}{}", abs.display(), line_ending);
+
+    let mut final_path = PathBuf::new();
+    if cfg!(windows) && resolve == ResolveMode::Physical {
+        // strip the '\\?\' prefix to the sting indicating 'Extended Length Path syntax' (https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file#namespaces)
+        for part in abs.components() {
+            match part {
+                Component::Prefix(_) => {
+                    final_path.push(&part.as_os_str().to_str().unwrap()[4..]);
+                }
+                _ => {
+                    final_path.push(part);
+                }
+            }
+        }
+    } else {
+        final_path = abs;
+    }
+
+    print!("{}{}", final_path.display(), line_ending);
     Ok(())
 }
